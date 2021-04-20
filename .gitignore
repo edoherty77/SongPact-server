@@ -1,0 +1,4 @@
+node_modules/
+mysql-notes.txt
+.env
+.vscode
