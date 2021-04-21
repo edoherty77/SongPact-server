@@ -20,22 +20,17 @@ const index = (req, res) => {
 //   })
 // }
 
-// const create = async (req, res) => {
-//   try {
-//     const createdItem = await db.Item.create(req.body)
-
-//     const foundCategory = await db.Category.findOne({
-//       title: req.body.category,
-//     })
-//     foundCategory.items.push(createdItem)
-//     await foundCategory.save()
-
-//     await createdItem.save()
-//     await res.json({ item: createdItem })
-//   } catch (error) {
-//     console.log(error)
-//   }
-// }
+const create = async (req, res) => {
+  try {
+    const body = req.body.body
+    const user = JSON.parse(body)
+    const createdUser = await db.User.create(user)
+    await createdUser.save()
+    await res.json({ user: createdUser })
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 // const update = (req, res) => {
 //   db.Item.findByIdAndUpdate(
@@ -71,7 +66,7 @@ const index = (req, res) => {
 module.exports = {
   index,
   // show,
-  // create,
+  create,
   // update,
   // destroy,
 }
