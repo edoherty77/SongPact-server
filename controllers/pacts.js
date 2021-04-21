@@ -1,16 +1,17 @@
 const db = require('../models')
-const { Category } = require('../models')
+// const { Pact } = require('../models')
 
 const index = async (req, res) => {
   try {
-    const Category = await db.Category.find({}).populate('items')
-
-    if (!Category.length)
+    const Pact = await db.Pact.find({})
+    // const Pact = await db.Category.find({}).populate('items')
+    console.log('Patc', Pact)
+    if (!Pact.length)
       return res.json({
         message: 'none found',
       })
 
-    await res.json({ category: Category })
+    await res.json({ pact: Pact })
   } catch (error) {
     console.log(error)
   }
@@ -26,15 +27,15 @@ const index = async (req, res) => {
 //   })
 // }
 
-const create = (req, res) => {
-  db.Category.create(req.body, (err, savedCategory) => {
-    if (err) console.log('Error in category#create:', err)
-    res.json({ item: savedCategory })
-  })
-}
+// const create = (req, res) => {
+//   db.Pact.create(req.body, (err, savedCategory) => {
+//     if (err) console.log('Error in category#create:', err)
+//     res.json({ item: savedCategory })
+//   })
+// }
 
 module.exports = {
   index,
   // show,
-  create,
+  // create,
 }

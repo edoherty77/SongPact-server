@@ -1,12 +1,13 @@
 const mongoose = require('mongoose')
+require('dotenv').config()
 
 const connectionString =
-  process.env.MONGODB_URI || 'mongodb://localhost:27017/listit'
+  process.env.MONGO_URI || 'mongodb://localhost:27017/spact'
 const configOptions = {
   useNewUrlParser: true,
-  useCreateIndex: true,
+  // useCreateIndex: true,
   useUnifiedTopology: true,
-  useFindAndModify: false,
+  // useFindAndModify: false,
 }
 
 mongoose
@@ -15,6 +16,6 @@ mongoose
   .catch((err) => console.log(`MongoDB connection error: ${err}`))
 
 module.exports = {
-  Item: require('./item'),
-  Category: require('./category'),
+  User: require('./user'),
+  Pact: require('./pact'),
 }

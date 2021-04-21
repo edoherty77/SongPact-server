@@ -1,4 +1,4 @@
 module.exports = {
-  items: require('./items'),
-  categories: require('./categories'),
+  users: require('./users'),
+  pacts: require('./pacts'),
 }
