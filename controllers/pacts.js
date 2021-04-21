@@ -1,5 +1,4 @@
 const db = require('../models')
-// const { Pact } = require('../models')
 
 const index = async (req, res) => {
   try {
