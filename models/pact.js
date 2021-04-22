@@ -3,15 +3,32 @@ const Schema = mongoose.Schema
 
 const PactSchema = new Schema({
   type: String,
-  initBy: String,
+  initBy: {
+    user: String,
+    status: Number,
+  },
   sample: Boolean,
   recordLabel: Boolean,
   labelName: String,
   recordTitle: String,
-  users: [
+  collaborators: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      user: String,
+      status: Number,
+    },
+  ],
+  users: [String],
+  producer: {
+    user: String,
+    advancePercent: Number,
+    publisherPercent: Number,
+    royaltyPercent: Number,
+    credit: String,
+  },
+  performers: [
+    {
+      user: String,
+      publisherPercent: Number,
     },
   ],
 })
