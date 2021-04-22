@@ -11,9 +11,6 @@ const index = (req, res) => {
 }
 
 const show = async (req, res) => {
-  let id = req.params.id
-  let userId = JSON.stringify(id)
-  console.log(userId)
   try {
     const foundUser = await db.User.findOne({ _id: req.params.id })
     if (!foundUser) return res.json({ message: 'none found' })

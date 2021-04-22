@@ -18,7 +18,7 @@ const UserSchema = new Schema({
     },
   ],
   email: String,
-  friendships: [String],
+  friends: [String],
 })
 
 const User = mongoose.model('User', UserSchema)

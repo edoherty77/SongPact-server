@@ -1,13 +1,16 @@
 const db = require('../models')
 
 const index = (req, res) => {
-  db.FriendRequest.find({}, (err, foundFriendships) => {
-    if (err) console.log('Error in users#index:', err)
-    if (!foundFriendships.length) {
-      return res.json({ message: 'nope' })
-    }
-    res.json({ users: foundFriendships })
-  })
+  db.FriendRequest.find(
+    { recipient: req.params.id },
+    (err, foundFriendRequests) => {
+      if (err) console.log('Error in requests#index:', err)
+      if (!foundFriendRequests.length) {
+        return res.json({ message: 'nope' })
+      }
+      res.json({ friendRequests: foundFriendRequests })
+    },
+  )
 }
 
 // const show = async (req, res) => {
@@ -25,12 +28,8 @@ const index = (req, res) => {
 
 const create = async (req, res) => {
   try {
-    console.log(req.body)
     const body = req.body.body
     const requestData = JSON.parse(body)
-    // const requesterId = body.requesterId
-    // const recipientId = body.recipientId
-    // let status = body.status
     const friendRequest = await db.FriendRequest.create(requestData)
     await friendRequest.save()
     await res.json({ request: friendRequest })
@@ -39,26 +38,40 @@ const create = async (req, res) => {
   }
 }
 
-// const update = (req, res) => {
-//   db.Item.findByIdAndUpdate(
-//     req.params.id,
-//     req.body,
-//     { new: true },
-//     (err, updatedItem) => {
-//       if (err) console.log('Error in items#update:', err)
+const update = async (req, res) => {
+  const status = req.body.status
+  const rqstr = req.body.requester
+  const rcpient = req.body.recipient
+  try {
+    const updatedRequest = await db.FriendRequest.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true },
+    )
+    if (!updatedRequest)
+      return await res.json({
+        message: 'No post with that ID',
+      })
 
-//       res.json({
-//         item: updatedItem,
-//         message: `${updatedItem.title} was updated successfully`,
-//       })
-//     },
-//   )
-// }
+    if (status === 2) {
+      const requester = await db.User.findOne({ _id: rqstr })
+      const recipient = await db.User.findOne({ _id: rcpient })
+      requester.friends.push(rcpient)
+      recipient.friends.push(rqstr)
+      await requester.save()
+      await recipient.save()
+    }
+    await updatedRequest.save()
+    await res.json({ request: updatedRequest })
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 module.exports = {
   index,
   // show,
   create,
-  // update,
+  update,
   // destroy,
 }
