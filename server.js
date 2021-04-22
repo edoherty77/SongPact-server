@@ -5,11 +5,11 @@ require('dotenv').config({ path: '.env' })
 const bodyParser = require('body-parser')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')
-const Pact = require('./models/pact')
+const FriendRequest = require('./models/friendRequest')
 const passport = require('passport')
 const port = process.env.PORT || 4000
 
-// let data = {
+// let pactData = {
 //   type: 'Producer',
 //   initBy: 'EvDawg',
 //   sample: true,
@@ -17,10 +17,15 @@ const port = process.env.PORT || 4000
 //   labelName: 'Stagotz',
 //   recordTitle: 'Shabloipz',
 // }
+let friendshipData = {
+  accepted: false,
+  sender: 'eba33569-5abb-430e-bd0a-39695feb2e5e',
+  receiver: '27f9ef6b-5632-4248-8593-9f9f64eb1674',
+}
 
-// Pact.create(data, (err, addedPact) => {
+// Friendship.create(friendshipData, (err, addedFriend) => {
 //   if (err) console.log(err)
-//   console.log(data, 'item created successfully')
+//   console.log(friendshipData, 'friendship created successfully')
 // })
 
 // middleware - JSON parsing
@@ -54,6 +59,7 @@ app.use(passport.session())
 // middleware - API routes
 app.use('/api/v1', routes.pacts)
 app.use('/api/v1/users', routes.users)
+app.use('/api/v1/friendRequests', routes.friendRequests)
 
 //connection
 app.listen(process.env.PORT, () =>

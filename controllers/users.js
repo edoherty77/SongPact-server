@@ -1,8 +1,8 @@
 const db = require('../models')
 
 const index = (req, res) => {
-  db.User.find({}, (err, foundItems) => {
-    if (err) console.log('Error in items#index:', err)
+  db.User.find({}, (err, foundUsers) => {
+    if (err) console.log('Error in users#index:', err)
     if (!foundUsers.length) {
       return res.json({ message: 'nope' })
     }
@@ -10,15 +10,18 @@ const index = (req, res) => {
   })
 }
 
-// const show = (req, res) => {
-//   db.Item.findById(req.params.id, (err, foundItem) => {
-//     if (err) console.log('Error in items#show:', err)
-
-//     if (!foundItem) return res.json({ message: 'none found' })
-
-//     res.json({ item: foundItem })
-//   })
-// }
+const show = async (req, res) => {
+  let id = req.params.id
+  let userId = JSON.stringify(id)
+  console.log(userId)
+  try {
+    const foundUser = await db.User.findOne({ _id: req.params.id })
+    if (!foundUser) return res.json({ message: 'none found' })
+    await res.json({ user: foundUser })
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 const create = async (req, res) => {
   try {
@@ -65,7 +68,7 @@ const create = async (req, res) => {
 
 module.exports = {
   index,
-  // show,
+  show,
   create,
   // update,
   // destroy,
