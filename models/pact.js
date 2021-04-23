@@ -2,10 +2,13 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const PactSchema = new Schema({
+  status: Number,
   type: String,
   initBy: {
     user: String,
     status: Number,
+    firstName: String,
+    lastName: String,
   },
   sample: Boolean,
   recordLabel: Boolean,
@@ -15,11 +18,15 @@ const PactSchema = new Schema({
     {
       user: String,
       status: Number,
+      firstName: String,
+      lastName: String,
     },
   ],
   users: [String],
   producer: {
     user: String,
+    firstName: String,
+    lastName: String,
     advancePercent: Number,
     publisherPercent: Number,
     royaltyPercent: Number,
@@ -29,6 +36,8 @@ const PactSchema = new Schema({
     {
       user: String,
       publisherPercent: Number,
+      firstName: String,
+      lastName: String,
     },
   ],
 })
