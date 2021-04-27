@@ -5,7 +5,7 @@ const ctrl = require('../controllers')
 router.get('/', ctrl.users.index)
 router.get('/:id', ctrl.users.show)
 router.post('/', ctrl.users.create)
-// router.put('/:id', ctrl.users.update)
+router.put('/:id', ctrl.users.update)
 // router.delete('/:id', ctrl.users.destroy)
 
 // exports

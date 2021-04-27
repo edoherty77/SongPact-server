@@ -34,21 +34,21 @@ const create = async (req, res) => {
   }
 }
 
-// const update = (req, res) => {
-//   db.Item.findByIdAndUpdate(
-//     req.params.id,
-//     req.body,
-//     { new: true },
-//     (err, updatedItem) => {
-//       if (err) console.log('Error in items#update:', err)
+const update = (req, res) => {
+  console.log('body', req.body, req.params.id)
+  db.User.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    { new: true },
+    (err, updatedUser) => {
+      if (err) console.log('Error in items#update:', err)
 
-//       res.json({
-//         item: updatedItem,
-//         message: `${updatedItem.title} was updated successfully`,
-//       })
-//     },
-//   )
-// }
+      res.json({
+        user: updatedUser,
+      })
+    },
+  )
+}
 
 // const destroy = async (req, res) => {
 //   try {
@@ -69,6 +69,6 @@ module.exports = {
   index,
   show,
   create,
-  // update,
+  update,
   // destroy,
 }
