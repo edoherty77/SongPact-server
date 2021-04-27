@@ -48,7 +48,6 @@ const update = async (req, res) => {
   const user = req.body.user
   const status = req.body.status
   const signatureImg = req.body.signatureImg
-  console.log('body', req.body, req.params.id)
   try {
     const updatedPact = await db.Pact.findOneAndUpdate(
       { _id: pactId, 'collaborators.user': user },
@@ -66,9 +65,23 @@ const update = async (req, res) => {
   }
 }
 
+const destroy = async (req, res) => {
+  try {
+    const deletedPact = await db.Pact.findByIdAndDelete(req.params.id)
+    const foundUsers = await db.User.find({ pacts: deletedPact._id })
+    foundUsers.map((user) => {
+      user.pacts.remove(deletedPact)
+      user.save()
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 module.exports = {
   index,
   // show,
   create,
   update,
+  destroy,
 }
