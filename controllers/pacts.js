@@ -43,8 +43,32 @@ const create = async (req, res) => {
   }
 }
 
+const update = async (req, res) => {
+  const pactId = req.body.id
+  const user = req.body.user
+  const status = req.body.status
+  const signatureImg = req.body.signatureImg
+  console.log('body', req.body, req.params.id)
+  try {
+    const updatedPact = await db.Pact.findOneAndUpdate(
+      { _id: pactId, 'collaborators.user': user },
+      {
+        $set: {
+          'collaborators.$.status': status,
+          'collaborators.$.signatureImg': signatureImg,
+        },
+      },
+      { new: true },
+    )
+    await updatedPact.save()
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 module.exports = {
   index,
   // show,
   create,
+  update,
 }
