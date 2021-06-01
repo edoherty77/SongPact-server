@@ -17,6 +17,7 @@ app.use(bodyParser.json())
 
 // parse requests of content-type: application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: true }))
 
 //middleware - session config
 app.use(
@@ -34,12 +35,14 @@ app.use(
 )
 
 //middleware - passport config
+// passport.use(new LocalStrategy({ userField: 'email' }))
 app.use(passport.initialize())
 app.use(passport.session())
 
 // middleware - API routes
 app.use('/api/v1/pacts', routes.pacts)
 app.use('/api/v1/users', routes.users)
+app.use('/api/v1/auth', routes.auth)
 app.use('/api/v1/friendRequests', routes.friendRequests)
 
 //connection

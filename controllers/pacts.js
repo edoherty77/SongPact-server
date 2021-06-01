@@ -29,6 +29,7 @@ const index = async (req, res) => {
 const create = async (req, res) => {
   const body = JSON.parse(req.body.body)
   const users = body.users
+  console.log('users', users)
   try {
     const newPact = await db.Pact.create(body)
     await newPact.save()
@@ -38,6 +39,7 @@ const create = async (req, res) => {
       user.pacts.push(newPact)
       user.save()
     })
+    await res.json({ pact: newPact })
   } catch (error) {
     console.log(error)
   }
@@ -48,18 +50,45 @@ const update = async (req, res) => {
   const user = req.body.user
   const status = req.body.status
   const signatureImg = req.body.signatureImg
+  const isProducer = req.body.checkProducer
   try {
-    const updatedPact = await db.Pact.findOneAndUpdate(
-      { _id: pactId, 'collaborators.user': user },
-      {
-        $set: {
-          'collaborators.$.status': status,
-          'collaborators.$.signatureImg': signatureImg,
+    if (isProducer === true) {
+      const updatedPact = await db.Pact.findOneAndUpdate(
+        { _id: pactId, 'producer.user': user },
+        {
+          $set: {
+            'producer.signatureImg': signatureImg,
+          },
         },
-      },
-      { new: true },
-    )
-    await updatedPact.save()
+        { new: true },
+      )
+      await updatedPact.save()
+      await res.json({ pact: updatedPact })
+    } else {
+      const updatedPact = await db.Pact.findOneAndUpdate(
+        { _id: pactId, 'performers.user': user },
+        {
+          $set: {
+            'performers.$.signatureImg': signatureImg,
+          },
+        },
+        { new: true },
+      )
+      await updatedPact.save()
+      await res.json({ pact: updatedPact })
+    }
+    // const updatedPact = await db.Pact.findOneAndUpdate(
+    //   { _id: pactId, 'collaborators.user': user },
+    //   {
+    //     $set: {
+    //       'collaborators.$.status': status,
+    //       'collaborators.$.signatureImg': signatureImg,
+    //     },
+    //   },
+    //   { new: true },
+    // )
+    // await updatedPact.save()
+    // await res.json({ pact: updatedPact })
   } catch (error) {
     console.log(error)
   }
@@ -73,6 +102,7 @@ const destroy = async (req, res) => {
       user.pacts.remove(deletedPact)
       user.save()
     })
+    await res.json({ pact: deletedPact })
   } catch (error) {
     console.log(error)
   }
