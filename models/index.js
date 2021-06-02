@@ -5,9 +5,9 @@ const connectionString =
   process.env.MONGO_URI || 'mongodb://localhost:27017/spact'
 const configOptions = {
   useNewUrlParser: true,
-  // useCreateIndex: true,
+  useCreateIndex: true,
   useUnifiedTopology: true,
-  // useFindAndModify: false,
+  useFindAndModify: false,
 }
 
 mongoose
@@ -18,4 +18,5 @@ mongoose
 module.exports = {
   User: require('./user'),
   Pact: require('./pact'),
+  FriendRequest: require('./friendRequest'),
 }
