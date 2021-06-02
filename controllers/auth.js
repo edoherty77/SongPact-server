@@ -40,14 +40,20 @@ const register = (req, res) => {
 }
 
 const login = (req, res) => {
-  console.log('yoooo')
   console.log('req.user here >>>>>>>>>>>', req.user)
   console.log('req.session here >>>>>>>>>>>', req.session)
-
   res.json({ user: req.user })
 }
 
-const logout = (req, res) => {}
+const logout = (req, res) => {
+  if (!req.user)
+    return res.json({
+      message: 'No User to log out',
+    })
+
+  req.logout()
+  res.json({ message: 'User logged out' })
+}
 
 //utility function for developer use only
 const verify = (req, res) => {}
