@@ -11,7 +11,6 @@ const index = (req, res) => {
 }
 
 const show = async (req, res) => {
-  console.log('id', req.params.id)
   try {
     const foundUser = await db.User.findOne({
       googleId: req.params.id,
@@ -24,7 +23,6 @@ const show = async (req, res) => {
 }
 
 const create = async (req, res) => {
-  console.log('body', req.body)
   try {
     const body = req.body.body
     const user = JSON.parse(body)
