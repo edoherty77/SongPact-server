@@ -4,9 +4,10 @@ const bcrypt = require('bcrypt')
 const register = (req, res) => {
   // validate the POSTed data - making sure we have a name, an email, a pw
   const body = JSON.parse(req.body.body)
-  const { firstName, lastName, email, password } = body
+  console.log('body', body)
+  const { email, password, name } = body
 
-  if (!firstName || !lastName || !email || !password) {
+  if (!name || !email || !password) {
     return res.json({
       message: 'Please enter a name, an email, and a password',
     })
@@ -26,8 +27,10 @@ const register = (req, res) => {
 
     // if the user doesnt exist, create and save a user to the DB
     const newUser = new db.User({
-      firstName,
-      lastName,
+      _id: email,
+      // firstName,
+      // lastName,
+      name,
       email,
       password,
     })

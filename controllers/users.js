@@ -13,7 +13,7 @@ const index = (req, res) => {
 const show = async (req, res) => {
   try {
     const foundUser = await db.User.findOne({
-      googleId: req.params.id,
+      _id: req.params.id,
     }).populate('pacts')
     // if (!foundUser) return res.json({ message: 'none found' })
     await res.json({ user: foundUser })
