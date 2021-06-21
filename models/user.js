@@ -16,6 +16,8 @@ const UserSchema = new Schema({
   facebookId: String,
   state: String,
   zipCode: String,
+  phoneNumber: Number,
+  googlePhotoUrl: String,
   pacts: [
     {
       type: mongoose.Schema.Types.ObjectId,
