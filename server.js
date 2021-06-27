@@ -5,7 +5,6 @@ require('dotenv').config({ path: '.env' })
 const bodyParser = require('body-parser')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')
-const FriendRequest = require('./models/friendRequest')
 const passport = require('passport')
 const port = process.env.PORT || 4000
 
@@ -27,7 +26,7 @@ app.use(
     }),
     secret: 'spact',
     resave: false, // will not resave sessions
-    saveUninitialized: false,
+    saveUninitialized: true,
     cookie: {
       maxAge: 1000 * 60 * 60 * 24,
     },
@@ -35,7 +34,6 @@ app.use(
 )
 
 //middleware - passport config
-// passport.use(new LocalStrategy({ userField: 'email' }))
 app.use(passport.initialize())
 app.use(passport.session())
 

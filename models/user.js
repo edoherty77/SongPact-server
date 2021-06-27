@@ -2,31 +2,36 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const bcrypt = require('bcrypt')
 
-const UserSchema = new Schema({
-  _id: String,
-  name: String,
-  firstName: String,
-  lastName: String,
-  password: String,
-  artistName: String,
-  companyName: String,
-  address: String,
-  city: String,
-  googleId: String,
-  facebookId: String,
-  state: String,
-  zipCode: String,
-  phoneNumber: Number,
-  googlePhotoUrl: String,
-  pacts: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Pact',
-    },
-  ],
-  email: String,
-  friends: [String],
-})
+const UserSchema = new Schema(
+  {
+    _id: String,
+    name: String,
+    firstName: String,
+    lastName: String,
+    password: String,
+    artistName: String,
+    companyName: String,
+    address: String,
+    city: String,
+    googleId: String,
+    facebookId: String,
+    state: String,
+    zipCode: String,
+    phoneNumber: Number,
+    googlePhotoUrl: String,
+    pacts: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Pact',
+      },
+    ],
+    email: String,
+    friends: [String],
+  },
+  {
+    versionKey: false,
+  },
+)
 
 //methods that the UserSchema can access
 UserSchema.methods = {

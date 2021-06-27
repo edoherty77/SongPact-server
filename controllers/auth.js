@@ -28,11 +28,9 @@ const register = (req, res) => {
     // if the user doesnt exist, create and save a user to the DB
     const newUser = new db.User({
       _id: email,
-      // firstName,
-      // lastName,
-      name,
-      email,
-      password,
+      name: name,
+      email: email,
+      password: password,
     })
 
     newUser.save((err, savedUser) => {

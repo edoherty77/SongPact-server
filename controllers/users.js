@@ -1,13 +1,17 @@
 const db = require('../models')
 
-const index = (req, res) => {
-  db.User.find({}, (err, foundUsers) => {
-    if (err) console.log('Error in users#index:', err)
-    if (!foundUsers.length) {
-      return res.json({ message: 'nope' })
-    }
-    res.json({ users: foundUsers })
-  })
+const search = (req, res) => {
+  const q = req.params.name
+  db.User.find(
+    {
+      name: {
+        $regex: new RegExp(q, 'i'),
+      },
+    },
+    function (err, data) {
+      res.json(data)
+    },
+  ).limit(10)
 }
 
 const show = async (req, res) => {
@@ -66,7 +70,7 @@ const update = (req, res) => {
 // }
 
 module.exports = {
-  index,
+  search,
   show,
   create,
   update,
