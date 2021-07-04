@@ -16,6 +16,8 @@ const UserSchema = new Schema({
   facebookId: String,
   state: String,
   zipCode: String,
+  phoneNumber: Number,
+  googlePhotoUrl: String,
   pacts: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -40,13 +42,15 @@ UserSchema.methods = {
   },
 }
 
-//use a 'pre' hook that will modify the user before saving them to the bd
+//use a 'pre' hook that will modify the user before saving them to the db
 UserSchema.pre('save', function (next) {
   //if there's no pw
   if (!this.password) {
     //exit the function
     next()
   } else {
+    // only hash the password if it has been modified (or is new)
+    if (!this.isModified('password')) return next()
     //if there is a pw
     //hash it, add it to the user and THEN save the user
     this.password = this.hashPassword(this.password)

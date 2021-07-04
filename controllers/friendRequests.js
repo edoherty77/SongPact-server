@@ -29,6 +29,7 @@ const index = (req, res) => {
 const create = async (req, res) => {
   try {
     const body = req.body.body
+    console.log(body)
     const requestData = JSON.parse(body)
     const friendRequest = await db.FriendRequest.create(requestData)
     await friendRequest.save()
@@ -42,6 +43,7 @@ const update = async (req, res) => {
   const status = req.body.status
   const rqstr = req.body.requester
   const rcpient = req.body.recipient
+  const friendRequestId = req.body.friendRequestId
   try {
     const updatedRequest = await db.FriendRequest.findByIdAndUpdate(
       req.params.id,
@@ -60,9 +62,21 @@ const update = async (req, res) => {
       recipient.friends.push(rqstr)
       await requester.save()
       await recipient.save()
+      // await db.FriendRequest.findByIdAndDelete(friendRequestId)
     }
     await updatedRequest.save()
     await res.json({ request: updatedRequest })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const destroy = async (req, res) => {
+  console.log('req', req.params.id)
+  try {
+    const deletedRequest = await db.FriendRequest.findByIdAndDelete(
+      req.params.id,
+    )
   } catch (error) {
     console.log(error)
   }
@@ -73,5 +87,5 @@ module.exports = {
   // show,
   create,
   update,
-  // destroy,
+  destroy,
 }
