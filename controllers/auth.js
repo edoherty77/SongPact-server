@@ -4,7 +4,6 @@ const bcrypt = require('bcrypt')
 const register = (req, res) => {
   // validate the POSTed data - making sure we have a name, an email, a pw
   const body = JSON.parse(req.body.body)
-  console.log('body', body)
   const { email, password, name } = body
 
   if (!name || !email || !password) {
@@ -41,8 +40,6 @@ const register = (req, res) => {
 }
 
 const login = (req, res) => {
-  console.log('req.user here >>>>>>>>>>>', req.user)
-  console.log('req.session here >>>>>>>>>>>', req.session)
   res.json({ user: req.user })
 }
 

@@ -4,7 +4,6 @@ const User = require('../models/user')
 
 //is called on login, this function uses the logged in user id to a session thru req.session
 passport.serializeUser((user, done) => {
-  console.log('serialize is getting called')
   done(null, user.id)
 })
 
