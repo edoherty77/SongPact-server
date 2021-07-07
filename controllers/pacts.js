@@ -29,15 +29,13 @@ const index = async (req, res) => {
 const create = async (req, res) => {
   const body = JSON.parse(req.body.body)
   const users = body.users
-  console.log('body', body)
   try {
     const newPact = await db.Pact.create(body)
     await newPact.save()
     const foundUsers = await db.User.find().where('_id').in(users).exec()
-    // console.log('found', foundUsers)
-    foundUsers.map((user) => {
+    foundUsers.map(async (user) => {
       user.pacts.push(newPact)
-      user.save()
+      await user.save()
     })
     await res.json({ pact: newPact })
   } catch (error) {
