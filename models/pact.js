@@ -22,7 +22,13 @@ const PactSchema = new Schema({
       signatureImg: String,
     },
   ],
-  users: [String],
+  users: [
+    {
+      user: String,
+      userStatus: Number,
+      signatureImg: String,
+    },
+  ],
   producer: {
     user: String,
     name: String,

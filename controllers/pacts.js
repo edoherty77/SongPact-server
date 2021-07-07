@@ -29,15 +29,19 @@ const index = async (req, res) => {
 const create = async (req, res) => {
   const body = JSON.parse(req.body.body)
   const users = body.users
-  console.log('users', users)
+  let userIds = []
+  for (let id of users) {
+    userIds.push(id.user)
+  }
+  console.log('users', userIds)
   try {
     const newPact = await db.Pact.create(body)
     await newPact.save()
-    const foundUsers = await db.User.find().where('_id').in(users).exec()
-    // console.log('found', foundUsers)
-    foundUsers.map((user) => {
+    const foundUsers = await db.User.find().where('_id').in(userIds).exec()
+    console.log('foundUsers', foundUsers)
+    foundUsers.map(async (user) => {
       user.pacts.push(newPact)
-      user.save()
+      await user.save()
     })
     await res.json({ pact: newPact })
   } catch (error) {
@@ -50,33 +54,20 @@ const update = async (req, res) => {
   const user = req.body.user
   const status = req.body.status
   const signatureImg = req.body.signatureImg
-  const isProducer = req.body.checkProducer
   try {
-    if (isProducer === true) {
-      const updatedPact = await db.Pact.findOneAndUpdate(
-        { _id: pactId, 'producer.user': user },
-        {
-          $set: {
-            'producer.signatureImg': signatureImg,
-          },
+    const updatedPact = await db.Pact.findOneAndUpdate(
+      { _id: pactId, 'users.user': user },
+      {
+        $set: {
+          'users.$.signatureImg': signatureImg,
+          'users.$.userStatus': 2,
         },
-        { new: true },
-      )
-      await updatedPact.save()
-      await res.json({ pact: updatedPact })
-    } else {
-      const updatedPact = await db.Pact.findOneAndUpdate(
-        { _id: pactId, 'performers.user': user },
-        {
-          $set: {
-            'performers.$.signatureImg': signatureImg,
-          },
-        },
-        { new: true },
-      )
-      await updatedPact.save()
-      await res.json({ pact: updatedPact })
-    }
+      },
+      { new: true },
+    )
+    await updatedPact.save()
+    await res.json({ pact: updatedPact })
+    // }
     // const updatedPact = await db.Pact.findOneAndUpdate(
     //   { _id: pactId, 'collaborators.user': user },
     //   {
