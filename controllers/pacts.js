@@ -29,7 +29,7 @@ const index = async (req, res) => {
 const create = async (req, res) => {
   const body = JSON.parse(req.body.body)
   const users = body.users
-  console.log('users', users)
+  console.log('body', body)
   try {
     const newPact = await db.Pact.create(body)
     await newPact.save()
