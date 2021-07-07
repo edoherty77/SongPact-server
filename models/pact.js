@@ -7,8 +7,7 @@ const PactSchema = new Schema({
   initBy: {
     user: String,
     status: Number,
-    firstName: String,
-    lastName: String,
+    name: String,
     signatureImg: String,
   },
   sample: Boolean,
@@ -19,16 +18,14 @@ const PactSchema = new Schema({
     {
       user: String,
       status: Number,
-      firstName: String,
-      lastName: String,
+      name: String,
       signatureImg: String,
     },
   ],
   users: [String],
   producer: {
     user: String,
-    firstName: String,
-    lastName: String,
+    name: String,
     advancePercent: Number,
     publisherPercent: Number,
     royaltyPercent: Number,
@@ -46,8 +43,7 @@ const PactSchema = new Schema({
     {
       user: String,
       publisherPercent: Number,
-      firstName: String,
-      lastName: String,
+      name: String,
       signatureImg: String,
       artistName: String,
       companyName: String,
