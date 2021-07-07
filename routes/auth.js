@@ -6,7 +6,5 @@ const passport = require('../passport')
 router.post('/login', passport.authenticate('local'), ctrl.auth.login)
 router.post('/register', ctrl.auth.register)
 router.delete('/logout', ctrl.auth.logout)
-//utility route -
-router.get('/verify', ctrl.auth.verify)
 
 module.exports = router
