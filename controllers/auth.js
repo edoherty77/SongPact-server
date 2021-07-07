@@ -1,5 +1,4 @@
 const db = require('../models')
-const bcrypt = require('bcrypt')
 
 const register = (req, res) => {
   // validate the POSTed data - making sure we have a name, an email, a pw
@@ -48,13 +47,9 @@ const logout = (req, res) => {
     return res.json({
       message: 'No User to log out',
     })
-
   req.logout()
   res.json({ message: 'User logged out' })
 }
-
-//utility function for developer use only
-const verify = (req, res) => {}
 
 module.exports = {
   login,
