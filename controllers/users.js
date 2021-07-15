@@ -39,7 +39,6 @@ const create = async (req, res) => {
 }
 
 const update = (req, res) => {
-  console.log('body', req.body, req.params.id)
   db.User.findByIdAndUpdate(
     req.params.id,
     req.body,

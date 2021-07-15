@@ -6,7 +6,6 @@ const index = async (req, res) => {
     const Pact = await db.Pact.find({ 'users.user': userId })
       .populate('users collaborators performers')
       .exec()
-    console.log('yooo', Pact)
     if (!Pact.length)
       return res.json({
         message: 'none found',
@@ -24,12 +23,10 @@ const create = async (req, res) => {
   for (let id of users) {
     userIds.push(id.user)
   }
-  console.log('users', userIds)
   try {
     const newPact = await db.Pact.create(body)
     await newPact.save()
     const foundUsers = await db.User.find().where('_id').in(userIds).exec()
-    console.log('foundUsers', foundUsers)
     foundUsers.map(async (user) => {
       user.pacts.push(newPact)
       await user.save()
