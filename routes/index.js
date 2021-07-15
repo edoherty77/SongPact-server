@@ -3,4 +3,5 @@ module.exports = {
   pacts: require('./pacts'),
   friendRequests: require('./friendRequests'),
   auth: require('./auth'),
+  message: require('./message'),
 }

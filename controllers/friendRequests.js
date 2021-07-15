@@ -72,7 +72,6 @@ const update = async (req, res) => {
 }
 
 const destroy = async (req, res) => {
-  console.log('req', req.params.id)
   try {
     const deletedRequest = await db.FriendRequest.findByIdAndDelete(
       req.params.id,

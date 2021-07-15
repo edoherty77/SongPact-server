@@ -41,6 +41,7 @@ app.use(passport.session())
 app.use('/api/v1/pacts', routes.pacts)
 app.use('/api/v1/users', routes.users)
 app.use('/api/v1/auth', routes.auth)
+app.use('/api/v1/message', routes.message)
 app.use('/api/v1/friendRequests', routes.friendRequests)
 
 //connection

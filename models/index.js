@@ -19,4 +19,5 @@ module.exports = {
   User: require('./user'),
   Pact: require('./pact'),
   FriendRequest: require('./friendRequest'),
+  Message: require('./message'),
 }
