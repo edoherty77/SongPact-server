@@ -1,30 +1,21 @@
 const db = require('../models')
 
 const index = async (req, res) => {
+  let userId = req.params.id
   try {
-    const Pact = await db.Pact.find({})
-    // const Pact = await db.Category.find({}).populate('items')
-    console.log('Patc', Pact)
+    const Pact = await db.Pact.find({ 'users.user': userId })
+      .populate('users collaborators performers')
+      .exec()
+    console.log('yooo', Pact)
     if (!Pact.length)
       return res.json({
         message: 'none found',
       })
-
     await res.json({ pact: Pact })
   } catch (error) {
     console.log(error)
   }
 }
-
-// const show = (req, res) => {
-//   db.Category.findById(req.params.id, (err, foundCategory) => {
-//     if (err) console.log('Error in categories#show:', err)
-
-//     if (!foundCategory) return res.json({ message: 'none found' })
-
-//     res.json({ item: foundCategory })
-//   })
-// }
 
 const create = async (req, res) => {
   const body = JSON.parse(req.body.body)
@@ -67,19 +58,6 @@ const update = async (req, res) => {
     )
     await updatedPact.save()
     await res.json({ pact: updatedPact })
-    // }
-    // const updatedPact = await db.Pact.findOneAndUpdate(
-    //   { _id: pactId, 'collaborators.user': user },
-    //   {
-    //     $set: {
-    //       'collaborators.$.status': status,
-    //       'collaborators.$.signatureImg': signatureImg,
-    //     },
-    //   },
-    //   { new: true },
-    // )
-    // await updatedPact.save()
-    // await res.json({ pact: updatedPact })
   } catch (error) {
     console.log(error)
   }
@@ -101,7 +79,6 @@ const destroy = async (req, res) => {
 
 module.exports = {
   index,
-  // show,
   create,
   update,
   destroy,
