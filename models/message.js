@@ -3,18 +3,8 @@ const Schema = mongoose.Schema
 
 const MessageSchema = new Schema({
   user: String,
-  recipients: [
-    {
-      user: String,
-    },
-  ],
-  content: [
-    {
-      message: String,
-      user: String,
-      date: String,
-    },
-  ],
+  message: String,
+  // timestamp: date.Now(),
 })
 
 const Message = mongoose.model('Message', MessageSchema)

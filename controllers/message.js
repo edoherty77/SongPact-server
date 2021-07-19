@@ -1,8 +1,12 @@
 const db = require('../models')
 
-const index = async (req, res) => {}
+const index = async (req, res) => {
+  console.log('all messages')
+}
 
-const show = async (req, res) => {}
+const show = async (req, res) => {
+  console.log('chatroom messages')
+}
 const create = async (req, res) => {}
 
 const update = async (req, res) => {}

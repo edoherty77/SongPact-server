@@ -27,9 +27,11 @@
     "express-flash": "^0.0.2",
     "express-router": "^0.0.1",
     "express-session": "^1.17.1",
+    "http": "^0.0.1-security",
     "mongoose": "^5.12.5",
     "passport": "^0.4.1",
     "passport-google-oauth": "^2.0.0",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "socket.io": "^4.1.3"
   }
 }

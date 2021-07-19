@@ -20,4 +20,5 @@ module.exports = {
   Pact: require('./pact'),
   FriendRequest: require('./friendRequest'),
   Message: require('./message'),
+  ChatRoom: require('./chatRoom'),
 }
