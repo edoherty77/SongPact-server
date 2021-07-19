@@ -1,7 +1,14 @@
 const db = require('../models')
 
 const index = async (req, res) => {
-  console.log('all messages')
+  const data = req.params.roomId
+  const roomIds = data.split(',')
+  try {
+    const foundChatRooms = await db.ChatRoom.find({ _id: roomIds })
+    await res.json({ foundChatRooms: foundChatRooms })
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 const show = async (req, res) => {
@@ -22,7 +29,6 @@ const create = async (req, res) => {
   }
   const obj = {}
   obj['members'] = members
-  // console.log('members', obj)
 
   try {
     const newChatRoom = await db.ChatRoom.create(obj)
@@ -32,7 +38,6 @@ const create = async (req, res) => {
       user.chatRooms.push(newChatRoom)
       await user.save()
     })
-    // console.log('new', newChatRoom)
     await res.json({ chatRoom: newChatRoom })
   } catch (error) {
     console.log(error)
