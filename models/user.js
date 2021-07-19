@@ -24,6 +24,12 @@ const UserSchema = new Schema({
       ref: 'Pact',
     },
   ],
+  chatRooms: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'ChatRooms',
+    },
+  ],
   email: String,
   friends: [String],
 })

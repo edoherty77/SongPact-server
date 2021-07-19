@@ -5,17 +5,35 @@ const index = async (req, res) => {
 }
 
 const show = async (req, res) => {
-  console.log('chatroom messages')
+  try {
+    const foundChatRoom = await db.ChatRoom.findOne({ _id: req.params.id })
+    await res.json({ chatRoom: foundChatRoom })
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 const create = async (req, res) => {
   const body = JSON.parse(req.body.body)
   const members = body
-  // console.log('mems', members)
+  let userIds = []
+  for (let id of members) {
+    userIds.push(id.user)
+  }
+  const obj = {}
+  obj['members'] = members
+  // console.log('members', obj)
+
   try {
-    const newChatRoom = await db.ChatRoom.create(members)
+    const newChatRoom = await db.ChatRoom.create(obj)
     await newChatRoom.save()
-    await res.json({ newChatRoom: newChatRoom })
+    const foundUsers = await db.User.find().where('_id').in(userIds).exec()
+    foundUsers.map(async (user) => {
+      user.chatRooms.push(newChatRoom)
+      await user.save()
+    })
+    // console.log('new', newChatRoom)
+    await res.json({ chatRoom: newChatRoom })
   } catch (error) {
     console.log(error)
   }
