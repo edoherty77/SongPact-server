@@ -4,4 +4,5 @@ module.exports = {
   friendRequests: require('./friendRequests'),
   auth: require('./auth'),
   message: require('./message'),
+  chatRoom: require('./chatRoom'),
 }
