@@ -5,6 +5,8 @@ const index = async (req, res) => {
   const roomIds = data.split(',')
   try {
     const foundChatRooms = await db.ChatRoom.find({ _id: roomIds })
+      .populate('messages')
+      .exec()
     await res.json({ foundChatRooms: foundChatRooms })
   } catch (error) {
     console.log(error)
@@ -21,8 +23,7 @@ const show = async (req, res) => {
 }
 
 const create = async (req, res) => {
-  const body = JSON.parse(req.body.body)
-  const members = body
+  const members = JSON.parse(req.body.body)
   let userIds = []
   for (let id of members) {
     userIds.push(id.user)
