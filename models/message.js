@@ -3,8 +3,9 @@ const Schema = mongoose.Schema
 
 const MessageSchema = new Schema({
   user: String,
+  name: String,
   message: String,
-  // timestamp: date.Now(),
+  timestamp: String,
 })
 
 const Message = mongoose.model('Message', MessageSchema)

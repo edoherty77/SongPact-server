@@ -1,13 +1,12 @@
 const express = require('express')
 const app = express()
 const routes = require('./routes')
-const http = require('http').createServer(app)
 require('dotenv').config({ path: '.env' })
 const bodyParser = require('body-parser')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')
 const passport = require('passport')
-const io = require('socket.io')(http)
+const { setUpWebSocket } = require('./socketIO')
 
 // middleware - JSON parsing
 app.use(express.json())
@@ -34,10 +33,6 @@ app.use(
   }),
 )
 
-io.on('connection', (socket) => {
-  socket.on('message', (message) => {})
-})
-
 //middleware - passport config
 app.use(passport.initialize())
 app.use(passport.session())
@@ -50,7 +45,9 @@ app.use('/api/v1/chatRoom', routes.chatRoom)
 app.use('/api/v1/message', routes.message)
 app.use('/api/v1/friendRequests', routes.friendRequests)
 
+const server = setUpWebSocket(app)
+
 //connection
-app.listen(process.env.PORT, () =>
+server.listen(process.env.PORT, () =>
   console.log(`Server is running on port ${process.env.PORT}`),
 )
