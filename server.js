@@ -44,6 +44,7 @@ app.use('/api/v1/auth', routes.auth)
 app.use('/api/v1/chatRoom', routes.chatRoom)
 app.use('/api/v1/message', routes.message)
 app.use('/api/v1/friendRequests', routes.friendRequests)
+app.use('/api/v1/notification', routes.notification)
 
 const server = setUpWebSocket(app)
 

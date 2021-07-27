@@ -32,6 +32,7 @@ const UserSchema = new Schema({
   ],
   email: String,
   friends: [String],
+  notifications: [String],
 })
 
 //methods that the UserSchema can access

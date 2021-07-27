@@ -29,7 +29,6 @@ const index = (req, res) => {
 const create = async (req, res) => {
   try {
     const body = req.body.body
-    console.log(body)
     const requestData = JSON.parse(body)
     const friendRequest = await db.FriendRequest.create(requestData)
     await friendRequest.save()

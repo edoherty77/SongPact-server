@@ -5,4 +5,5 @@ module.exports = {
   auth: require('./auth'),
   message: require('./message'),
   chatRoom: require('./chatRoom'),
+  notification: require('./notification'),
 }
