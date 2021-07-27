@@ -2,9 +2,12 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const NotificationSchema = new Schema({
-  friendRequest: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'friendRequests',
+  pactCreated: {
+    pactId: String,
+    initBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
   },
 })
 

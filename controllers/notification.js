@@ -1,6 +1,8 @@
 const db = require('../models')
 
-const index = async (req, res) => {}
+const index = async (req, res) => {
+  let userId = req.params.id
+}
 
 const show = async (req, res) => {}
 
