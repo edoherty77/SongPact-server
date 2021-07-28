@@ -3,14 +3,25 @@ const db = require('../models')
 const index = async (req, res) => {
   let userId = req.params.id
   try {
-    const Pact = await db.Pact.find({ 'users.user': userId })
+    const Pacts = await db.Pact.find({ 'users.user': userId })
       .populate('users collaborators performers')
       .exec()
-    if (!Pact.length)
+    if (!Pacts.length)
       return res.json({
         message: 'none found',
       })
-    await res.json({ pact: Pact })
+    await res.json({ pact: Pacts })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const show = async (req, res) => {
+  console.log('req', req.params.id)
+  try {
+    const foundPact = await db.Pact.findOne({ _id: req.params.id })
+    await res.json(foundPact)
+    console.log('foundPact', foundPact)
   } catch (error) {
     console.log(error)
   }
@@ -37,16 +48,14 @@ const create = async (req, res) => {
       user.pacts.push(newPact)
       await user.save()
     })
-    const foundCollabs = await db.User.find().where('_id').in(collabIds).exec()
-
     const newNotification = await db.Notification.create({
       pactId: newPact._id,
       text: `${initBy} created a contract for ${body.recordTitle}`,
     })
-    console.log('newNote', newNotification)
     await newNotification.save()
+    const foundCollabs = await db.User.find().where('_id').in(collabIds).exec()
     foundCollabs.map(async (user) => {
-      await user.notifications.push(newNotification._id)
+      user.notifications.push(newNotification)
       await user.save()
     })
     await res.json({ pact: newPact })
@@ -94,6 +103,7 @@ const destroy = async (req, res) => {
 
 module.exports = {
   index,
+  show,
   create,
   update,
   destroy,
