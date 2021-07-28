@@ -32,6 +32,12 @@ const UserSchema = new Schema({
   ],
   email: String,
   friends: [String],
+  notifications: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Notification',
+    },
+  ],
 })
 
 //methods that the UserSchema can access

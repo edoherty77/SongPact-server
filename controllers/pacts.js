@@ -3,14 +3,25 @@ const db = require('../models')
 const index = async (req, res) => {
   let userId = req.params.id
   try {
-    const Pact = await db.Pact.find({ 'users.user': userId })
+    const Pacts = await db.Pact.find({ 'users.user': userId })
       .populate('users collaborators performers')
       .exec()
-    if (!Pact.length)
+    if (!Pacts.length)
       return res.json({
         message: 'none found',
       })
-    await res.json({ pact: Pact })
+    await res.json({ pact: Pacts })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const show = async (req, res) => {
+  console.log('req', req.params.id)
+  try {
+    const foundPact = await db.Pact.findOne({ _id: req.params.id })
+    await res.json(foundPact)
+    console.log('foundPact', foundPact)
   } catch (error) {
     console.log(error)
   }
@@ -19,7 +30,13 @@ const index = async (req, res) => {
 const create = async (req, res) => {
   const body = JSON.parse(req.body.body)
   const users = body.users
+  const collabs = body.collaborators
+  const initBy = body.initBy.name
   let userIds = []
+  let collabIds = []
+  for (let id of collabs) {
+    collabIds.push(id.user)
+  }
   for (let id of users) {
     userIds.push(id.user)
   }
@@ -29,6 +46,18 @@ const create = async (req, res) => {
     const foundUsers = await db.User.find().where('_id').in(userIds).exec()
     foundUsers.map(async (user) => {
       user.pacts.push(newPact)
+      await user.save()
+    })
+    const newNotification = await db.Notification.create({
+      pactId: newPact._id,
+      text: ` created a ${body.type} for `,
+      initBy: initBy,
+      recordTitle: body.recordTitle,
+    })
+    await newNotification.save()
+    const foundCollabs = await db.User.find().where('_id').in(collabIds).exec()
+    foundCollabs.map(async (user) => {
+      user.notifications.push(newNotification)
       await user.save()
     })
     await res.json({ pact: newPact })
@@ -42,6 +71,11 @@ const update = async (req, res) => {
   const user = req.body.user
   const status = req.body.status
   const signatureImg = req.body.signatureImg
+  const otherUsers = req.body.otherUsers
+  let otherUserIds = []
+  for (let id of otherUsers) {
+    otherUserIds.push(id.user)
+  }
   try {
     const updatedPact = await db.Pact.findOneAndUpdate(
       { _id: pactId, 'users.user': user },
@@ -54,6 +88,18 @@ const update = async (req, res) => {
       { new: true },
     )
     await updatedPact.save()
+    const newNotification = await db.Notification.create({
+      pactId: pactId,
+      text: ` accepted the ${req.body.type} for `,
+      initBy: req.body.name,
+      recordTitle: req.body.recordTitle,
+    })
+    await newNotification.save()
+    const foundUsers = await db.User.find().where('_id').in(otherUserIds).exec()
+    foundUsers.map(async (user) => {
+      user.notifications.push(newNotification)
+      await user.save()
+    })
     await res.json({ pact: updatedPact })
   } catch (error) {
     console.log(error)
@@ -76,6 +122,7 @@ const destroy = async (req, res) => {
 
 module.exports = {
   index,
+  show,
   create,
   update,
   destroy,

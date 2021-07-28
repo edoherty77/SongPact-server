@@ -21,4 +21,5 @@ module.exports = {
   FriendRequest: require('./friendRequest'),
   Message: require('./message'),
   ChatRoom: require('./chatRoom'),
+  Notification: require('./notification'),
 }
