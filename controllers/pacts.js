@@ -50,7 +50,9 @@ const create = async (req, res) => {
     })
     const newNotification = await db.Notification.create({
       pactId: newPact._id,
-      text: `${initBy} created a contract for ${body.recordTitle}`,
+      text: ` created a ${body.type} for `,
+      initBy: initBy,
+      recordTitle: body.recordTitle,
     })
     await newNotification.save()
     const foundCollabs = await db.User.find().where('_id').in(collabIds).exec()
@@ -69,6 +71,11 @@ const update = async (req, res) => {
   const user = req.body.user
   const status = req.body.status
   const signatureImg = req.body.signatureImg
+  const otherUsers = req.body.otherUsers
+  let otherUserIds = []
+  for (let id of otherUsers) {
+    otherUserIds.push(id.user)
+  }
   try {
     const updatedPact = await db.Pact.findOneAndUpdate(
       { _id: pactId, 'users.user': user },
@@ -81,6 +88,18 @@ const update = async (req, res) => {
       { new: true },
     )
     await updatedPact.save()
+    const newNotification = await db.Notification.create({
+      pactId: pactId,
+      text: ` accepted the ${req.body.type} for `,
+      initBy: req.body.name,
+      recordTitle: req.body.recordTitle,
+    })
+    await newNotification.save()
+    const foundUsers = await db.User.find().where('_id').in(otherUserIds).exec()
+    foundUsers.map(async (user) => {
+      user.notifications.push(newNotification)
+      await user.save()
+    })
     await res.json({ pact: updatedPact })
   } catch (error) {
     console.log(error)
