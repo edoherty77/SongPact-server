@@ -20,8 +20,7 @@ const create = async (req, res) => {
   const body = JSON.parse(req.body.body)
   const users = body.users
   const collabs = body.collaborators
-  const initBy = body.initBy
-  console.log('collabs', collabs)
+  const initBy = body.initBy.name
   let userIds = []
   let collabIds = []
   for (let id of collabs) {
@@ -30,8 +29,6 @@ const create = async (req, res) => {
   for (let id of users) {
     userIds.push(id.user)
   }
-  console.log('collabIds', collabIds)
-  console.log('initBy', initBy)
   try {
     const newPact = await db.Pact.create(body)
     await newPact.save()
@@ -41,15 +38,13 @@ const create = async (req, res) => {
       await user.save()
     })
     const foundCollabs = await db.User.find().where('_id').in(collabIds).exec()
-    console.log('foundCollabs', foundCollabs)
-    const pactCreated = {
+
+    const newNotification = await db.Notification.create({
       pactId: newPact._id,
-      initBy: initBy,
-    }
-    console.log('pactCreated', pactCreated)
-    const newNotification = await db.Notification.create(pactCreated)
+      text: `${initBy} created a contract for ${body.recordTitle}`,
+    })
+    console.log('newNote', newNotification)
     await newNotification.save()
-    console.log('newNotification', newNotification)
     foundCollabs.map(async (user) => {
       await user.notifications.push(newNotification._id)
       await user.save()
