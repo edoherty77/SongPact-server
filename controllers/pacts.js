@@ -83,6 +83,7 @@ const update = async (req, res) => {
         $set: {
           'users.$.signatureImg': signatureImg,
           'users.$.userStatus': 2,
+          status: status,
         },
       },
       { new: true },
