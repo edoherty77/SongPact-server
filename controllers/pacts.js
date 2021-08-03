@@ -17,11 +17,9 @@ const index = async (req, res) => {
 }
 
 const show = async (req, res) => {
-  console.log('req', req.params.id)
   try {
     const foundPact = await db.Pact.findOne({ _id: req.params.id })
     await res.json(foundPact)
-    console.log('foundPact', foundPact)
   } catch (error) {
     console.log(error)
   }
