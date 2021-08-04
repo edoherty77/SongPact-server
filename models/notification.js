@@ -7,6 +7,7 @@ const NotificationSchema = new Schema({
   initBy: String,
   recordTitle: String,
   pactStatus: Number,
+  date: String,
 })
 
 const Notification = mongoose.model('Notification', NotificationSchema)

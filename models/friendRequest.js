@@ -9,6 +9,7 @@ const FriendRequestSchema = new Schema({
   recipient: {
     type: String,
   },
+  date: String,
 })
 
 const FriendRequest = mongoose.model('FriendRequest', FriendRequestSchema)
