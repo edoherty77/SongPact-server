@@ -1,4 +1,5 @@
 const db = require('../models')
+const moment = require('moment')
 
 const index = async (req, res) => {
   let userId = req.params.id
@@ -52,6 +53,7 @@ const create = async (req, res) => {
       initBy: initBy,
       recordTitle: body.recordTitle,
       pactStatus: 1,
+      date: moment().format('MMMM Do YYYY hh:mm A'),
     })
     await newNotification.save()
     const foundCollabs = await db.User.find().where('_id').in(collabIds).exec()
@@ -96,6 +98,7 @@ const update = async (req, res) => {
         initBy: req.body.name,
         recordTitle: req.body.recordTitle,
         pactStatus: status,
+        date: moment().format('MMMM Do YYYY hh:mm A'),
       })
     } else {
       newNotification = await db.Notification.create({
@@ -104,6 +107,7 @@ const update = async (req, res) => {
         initBy: req.body.name,
         recordTitle: req.body.recordTitle,
         pactStatus: status,
+        date: moment().format('MMMM Do YYYY hh:mm A'),
       })
     }
     await newNotification.save()

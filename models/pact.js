@@ -6,20 +6,22 @@ const PactSchema = new Schema({
   type: String,
   initBy: {
     user: String,
-    status: Number,
+    // status: Number,
     name: String,
-    signatureImg: String,
+    // signatureImg: String,
   },
   sample: Boolean,
   recordLabel: Boolean,
   labelName: String,
   recordTitle: String,
+  dateCreated: String,
+  lastUpdated: String,
   collaborators: [
     {
       user: String,
-      status: Number,
+      // status: Number,
       name: String,
-      signatureImg: String,
+      // signatureImg: String,
     },
   ],
   users: [
