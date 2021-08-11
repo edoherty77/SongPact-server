@@ -1,5 +1,5 @@
 const db = require('../models')
-const moment = require('moment')
+// const moment = require('moment')
 
 const index = async (req, res) => {
   let userId = req.params.id
@@ -31,6 +31,7 @@ const create = async (req, res) => {
   const users = body.users
   const collabs = body.collaborators
   const initBy = body.initBy.name
+  const lastUpdated = body.lastUpdated
   let userIds = []
   let collabIds = []
   for (let id of collabs) {
@@ -53,7 +54,7 @@ const create = async (req, res) => {
       initBy: initBy,
       recordTitle: body.recordTitle,
       pactStatus: 1,
-      date: moment().format('MMMM Do YYYY hh:mm A'),
+      date: lastUpdated,
     })
     await newNotification.save()
     const foundCollabs = await db.User.find().where('_id').in(collabIds).exec()
@@ -68,11 +69,12 @@ const create = async (req, res) => {
 }
 
 const update = async (req, res) => {
-  const pactId = req.body.id
+  const pactId = req.body._id
   const user = req.body.user
   const status = req.body.status
   const signatureImg = req.body.signatureImg
   const otherUsers = req.body.otherUsers
+  let lastUpdated = req.body.lastUpdated
   let otherUserIds = []
   for (let id of otherUsers) {
     otherUserIds.push(id.user)
@@ -98,7 +100,7 @@ const update = async (req, res) => {
         initBy: req.body.name,
         recordTitle: req.body.recordTitle,
         pactStatus: status,
-        date: moment().format('MMMM Do YYYY hh:mm A'),
+        date: lastUpdated,
       })
     } else {
       newNotification = await db.Notification.create({
@@ -107,7 +109,7 @@ const update = async (req, res) => {
         initBy: req.body.name,
         recordTitle: req.body.recordTitle,
         pactStatus: status,
-        date: moment().format('MMMM Do YYYY hh:mm A'),
+        date: lastUpdated,
       })
     }
     await newNotification.save()
