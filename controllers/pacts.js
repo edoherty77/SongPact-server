@@ -74,6 +74,8 @@ const update = async (req, res) => {
   const status = req.body.status
   const signatureImg = req.body.signatureImg
   const otherUsers = req.body.otherUsers
+  const producer = req.body.producer
+  const performers = req.body.performers
   let lastUpdated = req.body.lastUpdated
   let otherUserIds = []
   for (let id of otherUsers) {
@@ -87,6 +89,9 @@ const update = async (req, res) => {
           'users.$.signatureImg': signatureImg,
           'users.$.userStatus': 2,
           status: status,
+          lastUpdated: lastUpdated,
+          performers: performers,
+          producer: producer,
         },
       },
       { new: true },
