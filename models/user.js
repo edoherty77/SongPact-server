@@ -5,8 +5,6 @@ const bcrypt = require("bcrypt");
 const UserSchema = new Schema({
   _id: String,
   name: String,
-  firstName: String,
-  lastName: String,
   password: String,
   artistName: String,
   companyName: String,
@@ -17,6 +15,7 @@ const UserSchema = new Schema({
   zipCode: String,
   phoneNumber: Number,
   photoUrl: String,
+  profileComplete: Boolean,
   pacts: [
     {
       type: mongoose.Schema.Types.ObjectId,
